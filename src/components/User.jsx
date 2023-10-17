@@ -1,4 +1,3 @@
-// UserCard.js
 import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import React from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -8,7 +7,7 @@ const UserCard = ({ user }) => {
     const navigate = useNavigate();
 
     const handleNavigateOnClick = (userId) => {
-        console.log('hello')
+        
         navigate(`/profile/${userId}`)
     }
 

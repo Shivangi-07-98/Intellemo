@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import UserCard from './User';
-import { Pagination } from '@mui/material';
+import { Box, Pagination } from '@mui/material';
 import UserGrid from './Usergrid';
+import './Home.css';
 
 
 const Home = () => {
@@ -11,29 +12,17 @@ const Home = () => {
 
   useEffect(() => {
     fetchUsers();
-    // fetchUserProfile();
+    
   }, [page]);
 
   const fetchUsers = async () => {
     try {
       const response = await axios.get(`https://reqres.in/api/users?page=${page}`);
-      setUsers(response.data.data);
-      console.log("user",response.data.data);
+      setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
   };
-
-//   const fetchUserProfile = async () => {
-//     try {
-//       const response = await axios.get(`https://reqres.in/api/users/${userId}`);
-//       setUser(response.data.data);
-//       console.log("d",response.data.data);
-//     } catch (error) {
-//       console.error('Error fetching user profile:', error);
-//     }
-//   };
-
   
 
   const handlePageChange = (event, value) => {
@@ -41,13 +30,16 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <UserGrid users={users} />
-      <Pagination count={10} page={page} onChange={handlePageChange} />
+    <div className="home-container">
+      <div className="home-button">
+         <h1 style={{display:"flex",justifyContent:"center",backgroundColor: "#f0f0f0"}}>Home</h1>
+      {users && users.data && <UserGrid users={users.data} />}
+      <Box display="flex" justifyContent="center">
+      {users && <Pagination  count={users.total_pages} page={page} onChange={handlePageChange} />}
+      </Box>
     </div>
+ </div>
   );
 };
 
 export default Home;
-
-  

@@ -1,13 +1,12 @@
-// ProfilePage.js
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import './Profile.css';
 
 const ProfilePage = () => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
-  const [editedUser, setEditedUser] = useState({});
-  const [feedback, setFeedback] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUserProfile();
@@ -22,70 +21,42 @@ const ProfilePage = () => {
     }
   };
 
-  const handleInputChange = (field, value) => {
-    setEditedUser({ ...editedUser, [field]: value });
+  const handleEditClick = () => {
+    navigate(`/edit/${userId}`);
   };
 
-  const handleSaveChanges = async () => {
-    console.log('Edited User:', editedUser); 
-    try {
-      const response = await axios.patch(`https://reqres.in/api/users/${userId}`, editedUser);
-      setFeedback('User details updated successfully.');
-      setUser(response.data); // Update the user with the latest data
-    } catch (error) {
-      console.error('Error updating user details:', error);
-      setFeedback('Failed to update user details.');
-    }
+  const handleBackClick = () => {
+    navigate(`/`);
   };
 
   return (
-    <div>
+    <div className="card-container">
       {user && (
-        <div>
+        <div className="card">
           <img src={user.avatar} alt={`${user.first_name} ${user.last_name}`} />
           <div>
-            <label>
-              First Name:
-              <input
-                type="text"
-                value={editedUser.first_name || user.first_name}
-                onChange={(e) => handleInputChange('first_name', e.target.value)}
-              />
-            </label>
+            <p>
+              <strong>First Name:</strong> {user.first_name}
+            </p>
+            <p>
+              <strong>Last Name:</strong> {user.last_name}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
+            <p>
+              <strong>Job:</strong> {user.job || 'N/A'}
+            </p>
           </div>
-          <div>
-            <label>
-              Last Name:
-              <input
-                type="text"
-                value={editedUser.last_name || user.last_name}
-                onChange={(e) => handleInputChange('last_name', e.target.value)}
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              Email:
-              <input
-                type="text"
-                value={editedUser.email || user.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              Job:
-              <input
-                type="text"
-                value={editedUser.job || user.job || ''}
-                onChange={(e) => handleInputChange('job', e.target.value)}
-              />
-            </label>
-          </div>
-          <button onClick={handleSaveChanges}>Save Changes</button>
-          <Link to="/">Back to Homepage</Link>
-          {feedback && <p>{feedback}</p>}
+          <div >
+          <button onClick={handleEditClick} className="edit-button">
+            Edit
+          </button>
+
+          <button onClick={handleBackClick} className="back-to-homepage">
+            Back
+          </button>
+        </div>
         </div>
       )}
     </div>

@@ -1,0 +1,18 @@
+.home-container {
+    padding: 20px;
+  }
+  
+  .home-button {
+    width: 65%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .home-button button {
+    width: 100%;
+    padding: 20px;
+    /* Blue color for the button, adjust as needed */
+    
+    border: none;
+    cursor: pointer;
+  }
